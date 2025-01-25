@@ -1,0 +1,10 @@
+{% extends "zasoby/base.html" %}
+
+{% block content %}
+    <p>Czy na pewno chcesz usunąć "{{ resource.name }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Usuń</button>
+    </form>
+    <a href="{% url 'resource_list' %}">Anuluj</a>
+{% endblock %}

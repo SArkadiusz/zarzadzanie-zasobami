@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Historia użycia</title>
-</head>
-<body>
+{% extends "zasoby/base.html" %}
+
+{% block title %}Dodaj Zasób{% endblock %}
+
+{% block content %}
     <h1>Historia użycia zasobów</h1>
     <ul>
         {% for history in histories %}
             <li>{{ history.resource.name }} - Zużyte: {{ history.quantity_used }} {{ history.resource.unit }} - Data: {{ history.date_used }}</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}
