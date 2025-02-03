@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Resource, History
+from .models import Resource, History, Category
 from .forms import ResourceForm
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 import csv
-from django.http import HttpResponse
-
+from django.http import HttpResponse, JsonResponse
+from django.db.models import Sum
 def home_view(request):
     return render(request, 'zasoby/base.html')
 def resource_list(request):
@@ -61,6 +61,42 @@ def generate_report(request):
                          resource.purchase_date, resource.expiration_date])
 
     return response
+
+
+def chart_data(request):
+    categories = Category.objects.all()
+    data = {
+        "labels": [category.name for category in categories],
+        "values": [Resource.objects.filter(category=category).count() for category in categories]
+    }
+    return JsonResponse(data)
+
+def history_chart_data(request):
+    data = (
+        History.objects.values("date_used")
+        .annotate(total_used=Sum("quantity_used"))
+        .order_by("date_used")
+    )
+
+    labels = [entry["date_used"].strftime("%Y-%m-%d") for entry in data]
+    values = [entry["total_used"] for entry in data]
+
+    return JsonResponse({"labels": labels, "values": values})
+
+def category_usage_chart(request):
+    data = (
+        History.objects.values("resource__category__name")
+        .annotate(total_used=Sum("quantity_used"))
+        .order_by("-total_used")
+    )
+
+    labels = [entry["resource__category__name"] for entry in data]
+    values = [entry["total_used"] for entry in data]
+
+    return JsonResponse({"labels": labels, "values": values})
+
+def statistics_view(request):
+    return render(request, 'zasoby/statistics.html')
 
 
 # class ResourceUpdateView(UpdateView):

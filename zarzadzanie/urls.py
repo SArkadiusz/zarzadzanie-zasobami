@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from zasoby import views
-from zasoby.views import generate_report, home_view
+from zasoby.views import generate_report, home_view, chart_data, statistics_view, history_chart_data, category_usage_chart
 
 urlpatterns = [
     path('', views.home_view, name='home'),
@@ -28,4 +28,8 @@ urlpatterns = [
     path('resources/<int:pk>/delete/', views.resource_delete, name='resource_delete'),
     path('history/', views.history_list, name='history_list'),
     path('report/', generate_report, name='generate_report'),
+    path('chart-data/', chart_data, name='chart_data'),
+    path('history_chart/', history_chart_data, name='history_chart_data'),
+    path('category_usage_chart/', category_usage_chart, name='category_usage_chart'),
+    path('statistics/', statistics_view, name='statistics'),
 ]

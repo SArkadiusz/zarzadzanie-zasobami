@@ -1,0 +1,101 @@
+{% extends "zasoby/base.html" %}
+
+{% block title %}Statystyki{% endblock %}
+
+{% block content %}
+    <h2>Statystyki Zasobów</h2>
+    <canvas id="myChart"></canvas>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("{% url 'chart_data' %}")
+                .then(response => response.json())
+                .then(data => {
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Liczba zasobów w kategoriach',
+                                data: data.values,
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+        });
+    </script>
+
+    <h2>Zużycie zasobów w czasie</h2>
+    <canvas id="historyChart"></canvas>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("{% url 'history_chart_data' %}")
+                .then(response => response.json())
+                .then(data => {
+                    const ctx = document.getElementById('historyChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Zużycie zasobów',
+                                data: data.values,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderWidth: 2,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+        });
+    </script>
+
+    <h2>Zużycie według kategorii</h2>
+    <canvas id="categoryChart"></canvas>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("{% url 'category_usage_chart' %}")
+                .then(response => response.json())
+                .then(data => {
+                    const ctx = document.getElementById('categoryChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                data: data.values,
+                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#9966FF'],
+                            }]
+                        },
+                        options: {
+                            responsive: true
+                        }
+                    });
+                });
+        });
+    </script>
+
+{% endblock %}
