@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from zasoby import views
-from zasoby.views import generate_report, home_view, chart_data, statistics_view, history_chart_data, category_usage_chart
+from zasoby.views import generate_report, home_view, chart_data, statistics_view, history_chart_data, category_usage_chart, generate_pdf_view, generate_pdf
 
 urlpatterns = [
     path('', views.home_view, name='home'),
@@ -32,4 +32,6 @@ urlpatterns = [
     path('history_chart/', history_chart_data, name='history_chart_data'),
     path('category_usage_chart/', category_usage_chart, name='category_usage_chart'),
     path('statistics/', statistics_view, name='statistics'),
+    path("pdf/", generate_pdf_view, name="generate_pdf_view"),
+    path("pdf/download/", generate_pdf, name="generate_pdf"),
 ]
