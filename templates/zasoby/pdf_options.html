@@ -1,0 +1,11 @@
+<form method="get" action="{% url 'generate_pdf' %}">
+    <label for="option">Wybierz opcję do PDF:</label>
+    <select name="option" id="option">
+        <option value="all">Wszystkie zasoby</option>
+        <option value="expiring">Zasoby z kończącą się datą</option>
+        <option value="low_stock">Zasoby z niskim stanem</option>
+    </select>
+    <button type="submit">Generuj PDF</button>
+</form>
+
+
