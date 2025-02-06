@@ -37,41 +37,6 @@
         });
     </script>
 
-    <h2>Zużycie zasobów w czasie</h2>
-    <canvas id="historyChart"></canvas>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch("{% url 'history_chart_data' %}")
-                .then(response => response.json())
-                .then(data => {
-                    const ctx = document.getElementById('historyChart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: data.labels,
-                            datasets: [{
-                                label: 'Zużycie zasobów',
-                                data: data.values,
-                                borderColor: 'rgba(255, 99, 132, 1)',
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                borderWidth: 2,
-                                fill: true
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                });
-        });
-    </script>
-
     <h2>Zużycie według kategorii</h2>
     <canvas id="categoryChart"></canvas>
 
