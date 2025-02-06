@@ -1,0 +1,28 @@
+{% extends 'zasoby/base.html' %}
+{% block title %}Zasoby wkrótce wygasające{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Zasoby wkrótce wygasające</h2>  {# Zmieniłem na polski opis #}
+
+    {% if resources %}  {# Dodajemy sprawdzenie, czy są jakieś zasoby #}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nazwa</th>
+                    <th>Data wygaśnięcia</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource in resources %}
+                    <tr>
+                        <td>{{ resource.name }}</td>
+                        <td>{{ resource.expiration_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Brak zasobów, które wkrótce wygasają.</p>  {# Komunikat, gdy brak zasobów #}
+    {% endif %}
+</div>
+{% endblock %}

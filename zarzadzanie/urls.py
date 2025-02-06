@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from zasoby import views
-from zasoby.views import generate_report, home_view, chart_data, statistics_view, history_chart_data, category_usage_chart, generate_pdf_view, generate_pdf
+from zasoby.views import generate_report, home_view, chart_data, statistics_view, history_chart_data, category_usage_chart, generate_pdf_view, generate_pdf, expiring_soon_resources
 
 urlpatterns = [
     path('', views.home_view, name='home'),
@@ -27,6 +27,7 @@ urlpatterns = [
     path('resources/<int:pk>/edit/', views.resource_edit, name='resource_edit'),
     path('resources/<int:pk>/delete/', views.resource_delete, name='resource_delete'),
     path('history/', views.history_list, name='history_list'),
+    path('resources/<int:resource_id>/add_history/', views.add_history, name='add_history'),
     path('report/', generate_report, name='generate_report'),
     path('chart-data/', chart_data, name='chart_data'),
     path('history_chart/', history_chart_data, name='history_chart_data'),
@@ -34,4 +35,5 @@ urlpatterns = [
     path('statistics/', statistics_view, name='statistics'),
     path("pdf/", generate_pdf_view, name="generate_pdf_view"),
     path("pdf/download/", generate_pdf, name="generate_pdf"),
+    path('expiring-soon/', views.expiring_soon_resources, name='expiring_soon_resources'),
 ]

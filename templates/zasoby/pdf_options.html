@@ -1,3 +1,6 @@
+{% extends "zasoby/base.html" %}
+{% block title %}Opcje PDF{% endblock %}
+{% block content %}
 <form method="get" action="{% url 'generate_pdf' %}">
     <label for="option">Wybierz opcję do PDF:</label>
     <select name="option" id="option">
@@ -7,5 +10,5 @@
     </select>
     <button type="submit">Generuj PDF</button>
 </form>
-
+{% endblock %}
 

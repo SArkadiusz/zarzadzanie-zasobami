@@ -1,0 +1,10 @@
+{% extends "zasoby/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1>Witamy w systemie zarządzania zasobami</h1>
+    <p>To jest strona główna Systemu Zarządzania Zasobami. Użyj menu nawigacyjnego, aby zarządzać zasobami i przeglądać historię ich wykorzystania.</p>
+    <a href="{% url 'resource_list' %}" class="btn btn-primary">Zobacz zasoby</a>
+    <a href="{% url 'history_list' %}" class="btn btn-secondary">Zobacz Historię Zużycia</a>
+{% endblock %}
