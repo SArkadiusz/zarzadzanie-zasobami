@@ -5,16 +5,29 @@ from django.core.mail import send_mail
 from django.utils.timezone import now
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
 
 class Resource(models.Model):
+
+    UNIT_SZT = 'szt.'
+    UNIT_KG = 'kg'
+    UNIT_L = 'l'
+    UNIT_OP = 'op.'
+
+    UNIT_CHOICES = (
+        (UNIT_SZT, 'szt.'),
+        (UNIT_KG, 'kg'),
+        (UNIT_L, 'L'),
+        (UNIT_OP, 'op.'),
+    )
+
     name = models.CharField(max_length=100)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
-    unit = models.CharField(max_length=50, default="szt.")
+    unit = models.CharField(max_length=50, choices=UNIT_CHOICES, default=UNIT_SZT)
     purchase_date = models.DateField(null=True, blank=True)
     expiration_date = models.DateField(null=True, blank=True)
 
