@@ -8,11 +8,12 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 import csv
 from django.http import HttpResponse, JsonResponse
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from reportlab.pdfgen import canvas
 from datetime import date, timedelta
 import os
 from django.conf import settings
+from django.db.models.functions import TruncMonth
 def home_view(request):
     return render(request, 'zasoby/index.html')
 def resource_list(request):
@@ -96,17 +97,6 @@ def chart_data(request):
     }
     return JsonResponse(data)
 
-def history_chart_data(request):
-    data = (
-        History.objects.values("date_used")
-        .annotate(total_used=Sum("quantity_used"))
-        .order_by("date_used")
-    )
-
-    labels = [entry["date_used"].strftime("%Y-%m-%d") for entry in data]
-    values = [entry["total_used"] for entry in data]
-
-    return JsonResponse({"labels": labels, "values": values})
 
 def category_usage_chart(request):
     data = (
@@ -119,6 +109,8 @@ def category_usage_chart(request):
     values = [entry["total_used"] for entry in data]
 
     return JsonResponse({"labels": labels, "values": values})
+
+
 
 def statistics_view(request):
     return render(request, 'zasoby/statistics.html')

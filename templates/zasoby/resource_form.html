@@ -8,32 +8,32 @@
     {% csrf_token %}
 
     <div class="mb-3">
-        <label for="id_name" class="form-label">Nazwa zasobu</label>
+        <label for="id_name" class="form-label">Nazwa zasobu:</label>
         {{ form.name }}
     </div>
 
     <div class="mb-3">
-        <label for="id_category" class="form-label">Kategoria</label>
+        <label for="id_category" class="form-label">Kategoria:</label>
         {{ form.category }}
     </div>
 
     <div class="mb-3">
-        <label for="id_quantity" class="form-label">Ilość</label>
+        <label for="id_quantity" class="form-label">Ilość:</label>
         {{ form.quantity }}
     </div>
 
     <div class="mb-3">
-        <label for="id_unit" class="form-label">Jednostka</label>
+        <label for="id_unit" class="form-label">Jednostka:</label>
         {{ form.unit }}
     </div>
 
     <div class="mb-3">
-        <label for="datepicker_purchase" class="form-label">Data zakupu</label>
+        <label for="datepicker_purchase" class="form-label">Data zakupu:</label>
         {{ form.purchase_date }}
     </div>
 
     <div class="mb-3">
-        <label for="datepicker_expiration" class="form-label">Data ważności</label>
+        <label for="datepicker_expiration" class="form-label">Data ważności:</label>
         {{ form.expiration_date }}
     </div>
 
