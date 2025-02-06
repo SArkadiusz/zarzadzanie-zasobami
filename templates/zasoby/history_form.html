@@ -1,0 +1,12 @@
+{% extends "zasoby/base.html" %}
+
+{% block title %}Dodaj Zużycie{% endblock %}
+
+{% block content %}
+    <h1>Dodaj Zużycie dla {{ resource.name }}</h1>  <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Zapisz</button>
+    </form>
+    <a href="{% url 'resource_list' %}">Powrót do listy</a>
+{% endblock %}

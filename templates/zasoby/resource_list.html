@@ -1,12 +1,59 @@
+{#{% extends "zasoby/base.html" %}#}
+{##}
+{#{% block title %}Zasoby{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <h1>Lista zasobów</h1>#}
+{#    <ul>#}
+{#        {% for resource in resources %}#}
+{#            <li>#}
+{#                {{ resource.name }} ({{ resource.quantity }} {{ resource.unit }}) - Kategoria: {{ resource.category.name }} - Zakup: {{ resource.purchase_date }} - Wygasa: {{ resource.expiration_date }}#}
+{#                <a href="{% url 'add_history' resource.id %}">Dodaj Zużycie</a>#}
+{#                <a href="{% url 'resource_edit' resource.id %}">Edytuj</a>#}
+{#                <a href="{% url 'resource_delete' resource.id %}">Usuń</a>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#{% endblock %}#}
+
 {% extends "zasoby/base.html" %}
 
-{% block title %}Dodaj Zasób{% endblock %}
+{% block title %}Zasoby{% endblock %}
 
 {% block content %}
     <h1>Lista zasobów</h1>
-    <ul>
-        {% for resource in resources %}
-            <li>{{ resource.name }} ({{ resource.quantity }} {{ resource.unit }}) - Kategoria: {{ resource.category.name }} - Zakup: {{ resource.purchase_date }} - Wygasa: {{ resource.expiration_date }}</li>
-        {% endfor %}
-    </ul>
+
+    <div class="container">  {# Dodajemy kontener Bootstrap #}
+        <table class="table table-striped"> {# Dodajemy klasy tabeli Bootstrap #}
+            <thead>
+                <tr>
+                    <th>Nazwa</th>
+                    <th>Ilość</th>
+                    <th>Jednostka</th>
+                    <th>Kategoria</th>
+                    <th>Data zakupu</th>
+                    <th>Data wygaśnięcia</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource in resources %}
+                    <tr>
+                        <td>{{ resource.name }}</td>
+                        <td>{{ resource.quantity }}</td>
+                        <td>{{ resource.unit }}</td>
+                        <td>{{ resource.category.name }}</td>
+                        <td>{{ resource.purchase_date }}</td>
+                        <td>{{ resource.expiration_date }}</td>
+                        <td>
+                            <a href="{% url 'add_history' resource.id %}" class="btn btn-sm btn-primary">Dodaj Zużycie</a> {# Dodajemy button Bootstrap #}
+                            <a href="{% url 'resource_edit' resource.id %}" class="btn btn-sm btn-warning">Edytuj</a> {# Dodajemy button Bootstrap #}
+                            <a href="{% url 'resource_delete' resource.id %}" class="btn btn-sm btn-danger">Usuń</a> {# Dodajemy button Bootstrap #}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 {% endblock %}

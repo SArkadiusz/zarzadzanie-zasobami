@@ -1,28 +1,46 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-
+from django.db import transaction
 from .models import Resource, History, Category
-from .forms import ResourceForm
+from .forms import ResourceForm, HistoryForm
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 import csv
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Sum
 from reportlab.pdfgen import canvas
-from datetime import date
+from datetime import date, timedelta
 import os
 from django.conf import settings
 def home_view(request):
-    return render(request, 'zasoby/base.html')
+    return render(request, 'zasoby/index.html')
 def resource_list(request):
-    resources = Resource.objects.all()
+    resources = Resource.objects.exclude(quantity=0)
     return render(request, 'zasoby/resource_list.html', {'resources': resources})
 
 def history_list(request):
     histories = History.objects.all()
     return render(request, 'zasoby/history_list.html', {'histories': histories})
 
+def add_history(request, resource_id):
+    resource = get_object_or_404(Resource, pk=resource_id)
+    if request.method == 'POST':
+        form = HistoryForm(request.POST, resource=resource) # Przekazujemy resource do formularza
+        if form.is_valid():
+            with transaction.atomic():
+                history = form.save(commit=False)
+                history.resource = resource
+                history.save()
+
+                quantity_used = history.quantity_used
+                resource.quantity -= quantity_used
+                resource.save()
+
+            return redirect('resource_list')
+    else:
+        form = HistoryForm(resource=resource) # Przekazujemy resource do formularza również przy GET
+    return render(request, 'zasoby/history_form.html', {'form': form, 'resource': resource})
 
 # Widok dodawania zasobu
 def resource_create(request):
@@ -135,7 +153,7 @@ def generate_pdf(request):
         resources = Resource.objects.filter(expiration_date__lte=date.today())
         p.drawString(100, y_position, "Zasoby z kończącą się datą ważności:")
     elif option == "low_stock":
-        resources = Resource.objects.filter(quantity__lte=5)
+        resources = Resource.objects.filter(quantity__lte=1)
         p.drawString(100, y_position, "Zasoby z niskim stanem:")
     else:
         p.drawString(100, y_position, "Niepoprawna opcja")
@@ -151,6 +169,12 @@ def generate_pdf(request):
     p.showPage()
     p.save()
     return response
+
+def expiring_soon_resources(request):
+    today = date.today()
+    next_week = today + timedelta(days=7)
+    resources = Resource.objects.filter(expiration_date__lte=next_week, expiration_date__gte=today).exclude(quantity=0)
+    return render(request, 'zasoby/expiring_soon_resources.html', {'resources': resources})
 
 # class ResourceUpdateView(UpdateView):
 #     model = Resource
