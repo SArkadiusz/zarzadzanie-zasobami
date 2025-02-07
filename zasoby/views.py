@@ -4,18 +4,15 @@ from reportlab.pdfbase.ttfonts import TTFont
 from django.db import transaction
 from .models import Resource, History, Category
 from .forms import ResourceForm, HistoryForm
-from django.urls import reverse_lazy
-from django.views.generic.edit import UpdateView, DeleteView
-import csv
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Sum, Count
 from reportlab.pdfgen import canvas
 from datetime import date, timedelta
 import os
 from django.conf import settings
-from django.db.models.functions import TruncMonth
 def home_view(request):
     return render(request, 'zasoby/index.html')
+
 def resource_list(request):
     resources = Resource.objects.exclude(quantity=0)
     return render(request, 'zasoby/resource_list.html', {'resources': resources})
@@ -43,7 +40,6 @@ def add_history(request, resource_id):
         form = HistoryForm(resource=resource) # Przekazujemy resource do formularza również przy GET
     return render(request, 'zasoby/history_form.html', {'form': form, 'resource': resource})
 
-# Widok dodawania zasobu
 def resource_create(request):
     if request.method == 'POST':
         form = ResourceForm(request.POST)
@@ -54,7 +50,6 @@ def resource_create(request):
         form = ResourceForm()
     return render(request, 'zasoby/resource_form.html', {'form': form})
 
-# Widok edycji zasobu
 def resource_edit(request, pk):
     resource = get_object_or_404(Resource, pk=pk)
     if request.method == 'POST':
@@ -66,7 +61,6 @@ def resource_edit(request, pk):
         form = ResourceForm(instance=resource)
     return render(request, 'zasoby/resource_form.html', {'form': form})
 
-# Widok usuwania zasobu
 def resource_delete(request, pk):
     resource = get_object_or_404(Resource, pk=pk)
     if request.method == 'POST':
@@ -77,6 +71,7 @@ def resource_delete(request, pk):
 def category_list(request):
     categories = Category.objects.all()
     return render(request, 'zasoby/category_list.html', {'categories': categories})
+
 def add_category(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -85,20 +80,6 @@ def add_category(request):
             return redirect('category_list')
     return render(request, 'zasoby/add_category.html')
 
-def generate_report(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="resources_report.csv"'
-
-    writer = csv.writer(response)
-    writer.writerow(['Name', 'Category', 'Quantity', 'Unit', 'Purchase Date', 'Expiration Date'])
-
-    for resource in Resource.objects.all():
-        writer.writerow([resource.name, resource.category.name, resource.quantity, resource.unit,
-                         resource.purchase_date, resource.expiration_date])
-
-    return response
-
-
 def chart_data(request):
     categories = Category.objects.all()
     data = {
@@ -106,7 +87,6 @@ def chart_data(request):
         "values": [Resource.objects.filter(category=category).count() for category in categories]
     }
     return JsonResponse(data)
-
 
 def category_usage_chart(request):
     data = (
@@ -120,16 +100,12 @@ def category_usage_chart(request):
 
     return JsonResponse({"labels": labels, "values": values})
 
-
-
 def statistics_view(request):
     return render(request, 'zasoby/statistics.html')
-
 
 def generate_pdf_view(request):
     """Widok formularza wyboru opcji generowania PDF-a"""
     return render(request, "zasoby/pdf_options.html")
-
 
 def generate_pdf(request):
     """Widok generujący PDF na podstawie wybranej opcji"""
@@ -177,25 +153,3 @@ def expiring_soon_resources(request):
     next_week = today + timedelta(days=7)
     resources = Resource.objects.filter(expiration_date__lte=next_week, expiration_date__gte=today).exclude(quantity=0)
     return render(request, 'zasoby/expiring_soon_resources.html', {'resources': resources})
-
-# class ResourceUpdateView(UpdateView):
-#     model = Resource
-#     fields = ['name', 'category', 'quantity', 'unit', 'purchase_date', 'expiration_date']
-#     template_name = 'zasoby/resource_form.html'
-#     success_url = reverse_lazy('resource_list')
-#
-# class ResourceDeleteView(DeleteView):
-#     model = Resource
-#     template_name = 'zasoby/resource_confirm_delete.html'
-#     success_url = reverse_lazy('resource_list')
-#
-# class HistoryUpdateView(UpdateView):
-#     model = History
-#     fields = ['resource', 'quantity_used', 'date_used']
-#     template_name = 'zasoby/history_form.html'
-#     success_url = reverse_lazy('history_list')
-#
-# class HistoryDeleteView(DeleteView):
-#     model = History
-#     template_name = 'zasoby/history_confirm_delete.html'
-#     success_url = reverse_lazy('history_list')
