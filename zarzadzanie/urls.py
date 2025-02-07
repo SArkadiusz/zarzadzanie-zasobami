@@ -28,7 +28,6 @@ urlpatterns = [
     path('addcategory/', views.add_category, name='add_category'),
     path('history/', views.history_list, name='history_list'),
     path('resources/<int:resource_id>/add_history/', views.add_history, name='add_history'),
-    path('report/', views.generate_report, name='generate_report'),
     path('chart-data/', views.chart_data, name='chart_data'),
     path('category_usage_chart/', views.category_usage_chart, name='category_usage_chart'),
     path('statistics/', views.statistics_view, name='statistics'),
