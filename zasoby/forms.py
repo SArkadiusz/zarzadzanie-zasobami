@@ -15,11 +15,11 @@ class HistoryForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        self.resource = kwargs.pop('resource', None)  # Pobieramy resource z kwargs
+        self.resource = kwargs.pop('resource', None)
         super().__init__(*args, **kwargs)
 
     def clean_quantity_used(self):
         quantity_used = self.cleaned_data['quantity_used']
-        if self.resource and quantity_used > self.resource.quantity: # Sprawdzamy, czy resource istnieje
+        if self.resource and quantity_used > self.resource.quantity:
             raise forms.ValidationError("Nie można zużyć więcej niż dostępna ilość.")
         return quantity_used

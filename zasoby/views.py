@@ -74,6 +74,16 @@ def resource_delete(request, pk):
         return redirect('resource_list')
     return render(request, 'zasoby/resource_confirm_delete.html', {'resource': resource})
 
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'zasoby/category_list.html', {'categories': categories})
+def add_category(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if name:
+            Category.objects.create(name=name)
+            return redirect('category_list')
+    return render(request, 'zasoby/add_category.html')
 
 def generate_report(request):
     response = HttpResponse(content_type='text/csv')

@@ -1,0 +1,14 @@
+{% extends "zasoby/base.html" %}
+
+{% block title %}Dodaj kategorię{% endblock %}
+
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="name">Nazwa:</label>
+        <input type="text" name="name" id="name" required>
+        <button type="submit">Zapisz</button>
+    </form>
+
+{% endblock %}

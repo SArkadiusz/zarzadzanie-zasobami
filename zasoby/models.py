@@ -32,7 +32,6 @@ class Resource(models.Model):
     expiration_date = models.DateField(null=True, blank=True)
 
     def check_expiration_and_stock(self):
-        """Sprawdza datę ważności i ilość zasobu, wysyłając e-mail w razie potrzeby."""
         today = now().date()
 
         if self.expiration_date and self.expiration_date <= today + timedelta(days=7):
@@ -42,7 +41,6 @@ class Resource(models.Model):
             self.send_email_alert("Zasób prawie się skończył!")
 
     def send_email_alert(self, message):
-        """Wysyła powiadomienie e-mail."""
         send_mail(
             subject=f"Powiadomienie: {self.name}",
             message=f"{message}\n\nProdukt: {self.name}\nPozostała ilość: {self.quantity} {self.unit}\nData ważności: {self.expiration_date}",
