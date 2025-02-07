@@ -1,0 +1,15 @@
+{% extends "zasoby/base.html" %}
+
+{% block title %}Lista kategorii{% endblock %}
+
+{% block content %}
+
+
+    <h1>Lista kategorii</h1>
+    <ul>
+        {% for category in categories %}
+        <li>{{ category.name }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_category' %}" class="btn btn-primary">Dodaj kategorię</a>
+{% endblock %}

@@ -1,21 +1,3 @@
-{#{% extends "zasoby/base.html" %}#}
-{##}
-{#{% block title %}Zasoby{% endblock %}#}
-{##}
-{#{% block content %}#}
-{#    <h1>Lista zasobów</h1>#}
-{#    <ul>#}
-{#        {% for resource in resources %}#}
-{#            <li>#}
-{#                {{ resource.name }} ({{ resource.quantity }} {{ resource.unit }}) - Kategoria: {{ resource.category.name }} - Zakup: {{ resource.purchase_date }} - Wygasa: {{ resource.expiration_date }}#}
-{#                <a href="{% url 'add_history' resource.id %}">Dodaj Zużycie</a>#}
-{#                <a href="{% url 'resource_edit' resource.id %}">Edytuj</a>#}
-{#                <a href="{% url 'resource_delete' resource.id %}">Usuń</a>#}
-{#            </li>#}
-{#        {% endfor %}#}
-{#    </ul>#}
-{#{% endblock %}#}
-
 {% extends "zasoby/base.html" %}
 
 {% block title %}Zasoby{% endblock %}
@@ -23,8 +5,8 @@
 {% block content %}
     <h1>Lista zasobów</h1>
 
-    <div class="container">  {# Dodajemy kontener Bootstrap #}
-        <table class="table table-striped"> {# Dodajemy klasy tabeli Bootstrap #}
+    <div class="container">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Nazwa</th>
@@ -46,9 +28,9 @@
                         <td>{{ resource.purchase_date }}</td>
                         <td>{{ resource.expiration_date }}</td>
                         <td>
-                            <a href="{% url 'add_history' resource.id %}" class="btn btn-sm btn-primary">Dodaj Zużycie</a> {# Dodajemy button Bootstrap #}
-                            <a href="{% url 'resource_edit' resource.id %}" class="btn btn-sm btn-warning">Edytuj</a> {# Dodajemy button Bootstrap #}
-                            <a href="{% url 'resource_delete' resource.id %}" class="btn btn-sm btn-danger">Usuń</a> {# Dodajemy button Bootstrap #}
+                            <a href="{% url 'add_history' resource.id %}" class="btn btn-sm btn-primary">Dodaj Zużycie</a>
+                            <a href="{% url 'resource_edit' resource.id %}" class="btn btn-sm btn-warning">Edytuj</a>
+                            <a href="{% url 'resource_delete' resource.id %}" class="btn btn-sm btn-danger">Usuń</a>
                         </td>
                     </tr>
                 {% endfor %}
