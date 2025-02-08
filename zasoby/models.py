@@ -50,7 +50,7 @@ class Resource(models.Model):
         )
 
     def __str__(self):
-        return f"{self.name} ({self.quantity} {self.unit})"
+        return f"{self.name} ({self.quantity:.2f} {self.unit})"
 
 class History(models.Model):
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
@@ -58,4 +58,4 @@ class History(models.Model):
     date_used = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.resource.name} - {self.quantity_used} {self.resource.unit} zużyte"
+        return f"{self.resource.name} - {self.quantity_used:.2f} {self.resource.unit} zużyte"
