@@ -11,6 +11,7 @@ psycopg2-binary==2.9.10
 pydotplus==2.0.2
 pyparsing==3.2.1
 pytest==8.3.4
+pytest-django==4.9.0
 python-dotenv==1.0.1
 python-http-client==3.3.7
 reportlab==4.3.0
