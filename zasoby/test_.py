@@ -95,6 +95,7 @@ def test_add_history_post(client, resource):
         assert resource.quantity == initial_quantity - 3
         assert History.objects.count() == 1
 
+@pytest.mark.django_db
 def test_resource_create_get(client):
     response = client.get(reverse('resource_create'))
     assert response.status_code == 200
@@ -132,10 +133,9 @@ def test_resource_delete_get(client, resource):
 
 @pytest.mark.django_db
 def test_resource_delete_post(client, resource):
-    with transaction.atomic():
-        response = client.post(reverse('resource_delete', args=[resource.id]))
-        assert response.status_code == 302
-        assert Resource.objects.count() == 0
+    response = client.post(reverse('resource_delete', args=[resource.id]))
+    assert response.status_code == 302
+    assert Resource.objects.count() == 0
 
 @pytest.mark.django_db
 def test_category_list(client, category):
@@ -146,10 +146,9 @@ def test_category_list(client, category):
 
 @pytest.mark.django_db
 def test_add_category_post(client):
-    with transaction.atomic():
-        response = client.post(reverse('add_category'), {'name': 'Nowa Kategoria'})
-        assert response.status_code == 302
-        assert Category.objects.count() == 1
+    response = client.post(reverse('add_category'), {'name': 'Nowa Kategoria'})
+    assert response.status_code == 302
+    assert Category.objects.count() == 1
 
 @pytest.mark.django_db
 def test_chart_data(client, category, resource):
