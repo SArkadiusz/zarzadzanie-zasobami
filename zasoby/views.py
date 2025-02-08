@@ -24,7 +24,7 @@ def history_list(request):
 def add_history(request, resource_id):
     resource = get_object_or_404(Resource, pk=resource_id)
     if request.method == 'POST':
-        form = HistoryForm(request.POST, resource=resource) # Przekazujemy resource do formularza
+        form = HistoryForm(request.POST, resource=resource)
         if form.is_valid():
             with transaction.atomic():
                 history = form.save(commit=False)
@@ -37,7 +37,7 @@ def add_history(request, resource_id):
 
             return redirect('resource_list')
     else:
-        form = HistoryForm(resource=resource) # Przekazujemy resource do formularza również przy GET
+        form = HistoryForm(resource=resource)
     return render(request, 'zasoby/history_form.html', {'form': form, 'resource': resource})
 
 def resource_create(request):
@@ -109,7 +109,7 @@ def generate_pdf_view(request):
 
 def generate_pdf(request):
     """Widok generujący PDF na podstawie wybranej opcji"""
-    option = request.GET.get("option", "all")  # Domyślnie pobiera wszystkie zasoby
+    option = request.GET.get("option", "all")
 
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = 'attachment; filename="zasoby.pdf"'

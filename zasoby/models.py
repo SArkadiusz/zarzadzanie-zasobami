@@ -31,23 +31,23 @@ class Resource(models.Model):
     purchase_date = models.DateField(null=True, blank=True)
     expiration_date = models.DateField(null=True, blank=True)
 
-    def check_expiration_and_stock(self):
-        today = now().date()
-
-        if self.expiration_date and self.expiration_date <= today + timedelta(days=7):
-            self.send_email_alert("Data ważności produktu się kończy!")
-
-        if self.quantity <= 1:
-            self.send_email_alert("Zasób prawie się skończył!")
-
-    def send_email_alert(self, message):
-        send_mail(
-            subject=f"Powiadomienie: {self.name}",
-            message=f"{message}\n\nProdukt: {self.name}\nPozostała ilość: {self.quantity} {self.unit}\nData ważności: {self.expiration_date}",
-            from_email="arkadinio@gmail.com",
-            recipient_list=["arkadiniogry@gmail.com"],
-            fail_silently=False,
-        )
+    # def check_expiration_and_stock(self):
+    #     today = now().date()
+    #
+    #     if self.expiration_date and self.expiration_date <= today + timedelta(days=7):
+    #         self.send_email_alert("Data ważności produktu się kończy!")
+    #
+    #     if self.quantity <= 1:
+    #         self.send_email_alert("Zasób prawie się skończył!")
+    #
+    # def send_email_alert(self, message):
+    #     send_mail(
+    #         subject=f"Powiadomienie: {self.name}",
+    #         message=f"{message}\n\nProdukt: {self.name}\nPozostała ilość: {self.quantity} {self.unit}\nData ważności: {self.expiration_date}",
+    #         from_email="arkadinio@gmail.com",
+    #         recipient_list=["arkadiniogry@gmail.com"],
+    #         fail_silently=False,
+    #     )
 
     def __str__(self):
         return f"{self.name} ({self.quantity:.2f} {self.unit})"
