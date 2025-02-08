@@ -104,11 +104,9 @@ def statistics_view(request):
     return render(request, 'zasoby/statistics.html')
 
 def generate_pdf_view(request):
-    """Widok formularza wyboru opcji generowania PDF-a"""
     return render(request, "zasoby/pdf_options.html")
 
 def generate_pdf(request):
-    """Widok generujący PDF na podstawie wybranej opcji"""
     option = request.GET.get("option", "all")
 
     response = HttpResponse(content_type="application/pdf")
